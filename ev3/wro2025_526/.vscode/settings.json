@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "rgb_to_hsv.h": "c",
+        "ev3api_sensor.h": "c",
+        "motor_movement.h": "c",
+        "sorts.h": "c",
+        "ev3api.h": "c",
+        "linetrase.h": "c",
+        "motor_movement_new.h": "c",
+        "wait_for_button.h": "c",
+        "stdio.h": "c",
+        "app.h": "c",
+        "steering.h": "c",
+        "stdlib.h": "c",
+        "one_linetrase.h": "c",
+        "cstdlib": "c",
+        "motor_movement_ster.h": "c"
+    }
+}

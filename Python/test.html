@@ -1,0 +1,327 @@
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サイコロ9個ゾロ目耐久並走</title>
+<style>
+body {
+    font-family: "Segoe UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #eaf4ff;
+    background: radial-gradient(circle at top, #1b2a4a 0%, #0a0f1f 60%);
+    min-height: 100vh;
+    transition: background 0.6s;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+}
+
+.neon-basic {
+    color: #fff;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+}
+
+/* ===== 上段横並び ===== */
+.top-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: nowrap;
+    max-width: 700px;
+    margin: 0 auto 20px;
+    flex-direction: column; /* 上下に配置 */
+}
+
+/* ===== 試行回数テーブル ===== */
+.stats-panel {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 6px;
+    background: rgba(20,30,60,0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    margin-bottom: 16px; /* ダイステーブルと間隔を調整 */
+}
+
+/* 試行回数のpタグ */
+.stats-panel p {
+    margin: 0;
+}
+
+/* ===== サイコロパネル ===== */
+.dice-panel {
+    width: 260px;
+    padding: 8px;
+    background: rgba(20,30,60,0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    margin: 0 auto; /* 中央寄せ */
+}
+
+#dice-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 6px;
+    justify-items: center;
+    align-items: center;
+}
+
+.dice {
+    width: 52px;
+    height: 52px;
+    line-height: 52px;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    color: #eaf4ff;
+    background: linear-gradient(145deg,#1e64c8,#0a3296);
+    animation: roll 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.highlight {
+    background: linear-gradient(145deg,#ff4040,#c80000) !important;
+    animation: glow 0.8s infinite alternate;
+}
+
+/* ===== ボタン ===== */
+button {
+    font-size: 1rem;
+    padding: 8px 16px;
+    margin: 6px;
+    border-radius: 999px;
+    border: none;
+    color: #fff;
+    background: linear-gradient(135deg,#4fc3f7,#7b60f4);
+    cursor: pointer;
+}
+
+/* ===== 履歴 ===== */
+.history-panel {
+    max-width: 520px;
+    margin: 20px auto;
+    padding: 12px;
+    background: rgba(20,30,60,0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.history-panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.history-panel li {
+    font-family: monospace;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.history-panel li.hit {
+    color: #ff4040;
+}
+
+/* ===== YouTube ===== */
+.video-wrapper {
+    max-width: 560px;
+    aspect-ratio: 16/9;
+    margin: 20px auto;
+}
+
+.video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ===== Twitter ===== */
+.twitter-wrap {
+    max-width: 560px;
+    margin: 20px auto;
+}
+
+/* ===== ポップアップ ===== */
+.popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: #0f1a33;
+    padding: 26px;
+    border-radius: 16px;
+}
+
+/* ===== アニメ ===== */
+@keyframes roll { from { transform: rotate(0deg); } to { transform: rotate(720deg); } }
+@keyframes glow { from { box-shadow:0 0 8px rgba(255,80,80,0.6);} to { box-shadow:0 0 18px rgba(255,200,200,1);} }
+
+@media (max-width: 480px) {
+    .top-row { flex-direction: column; gap: 12px; }
+    .dice-panel { width: 220px; }
+    .stats-panel { width: 100%; font-size: 0.85rem; }
+    button { padding: 6px 10px; font-size: 0.9rem; margin: 4px; }
+    h1 { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body style="background: rgb(255, 228, 181);">
+
+<h1 class="neon-basic">🎲フブさんと9個ゾロ目並走</h1>
+
+<!-- 試行回数テーブル -->
+<div class="stats-panel">
+    <p>回数:<span id="roll-count">1253</span>　　　7個:<span id="count-7">2</span>　8個:<span id="count-8">0</span>　9個:<span id="count-9">0</span></p>
+</div>
+
+<!-- サイコロテーブル -->
+<div class="top-row">
+    <div class="dice-panel">
+        <div id="dice-container"><div class="dice">5</div><div class="dice">2</div><div class="dice highlight">1</div><div class="dice highlight">1</div><div class="dice highlight">1</div><div class="dice highlight">1</div><div class="dice">2</div><div class="dice">3</div><div class="dice highlight">1</div></div>
+    </div>
+</div>
+
+<!-- ボタン -->
+<div>
+    <button onclick="rollDice()">9個振る</button>
+    <button onclick="resetStats()">リセット</button>
+    <button onclick="tweetResult()">ポスト</button>
+</div>
+
+<!-- YouTube -->
+<div class="video-wrapper">
+    <iframe src="https://www.youtube.com/embed/jtU-KcAoRZw" title="【運ゲー】サイコロ９個ゾロ目出す耐久配信。(睡魔に勝てなかったら終了)【白上フブキ/ホロライブ】" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div>
+
+<!-- 履歴 -->
+<div class="history-panel">
+    <h3>🎲履歴（直近10回）</h3>
+    <ul id="history-list"><li class="">6, 2, 5, 2, 5, 4, 6, 6, 3</li><li class="">1, 2, 1, 3, 5, 1, 6, 4, 3</li><li class="">4, 3, 1, 4, 5, 2, 5, 3, 6</li><li class="">3, 2, 1, 5, 4, 6, 1, 6, 4</li><li class="">6, 4, 3, 1, 3, 4, 6, 5, 6</li><li class="">5, 3, 3, 3, 2, 6, 4, 5, 4</li><li class="">1, 2, 5, 4, 3, 2, 6, 3, 4</li><li class="">5, 2, 4, 4, 2, 2, 2, 1, 5</li><li class="">2, 1, 6, 3, 2, 1, 1, 4, 4</li><li class="hit">5, 2, 1, 1, 1, 1, 2, 3, 1</li></ul>
+</div>
+
+<!-- ポップアップ -->
+<div id="popup" class="popup" style="display: flex;">
+    <div class="popup-content">
+        <h2>ゾロ目達成！</h2>
+        <p id="popup-message">5個ゾロ目達成！</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+</div>
+
+<script>
+// グローバルスコープに`rolls`配列を宣言
+let rollCount = 0, count5 = 0, count6 = 0, count7 = 0, count8 = 0, count9 = 0, lastZoro = 0;
+const history = [];
+let rolls = []; // ここで宣言
+
+// サイコロ絵文字のマッピング
+const diceEmojis = {
+    1: "1️⃣",
+    2: "2️⃣",
+    3: "3️⃣",
+    4: "4️⃣",
+    5: "5️⃣",
+    6: "6️⃣"
+};
+
+window.onload = rollDice;
+
+function rollDice() {
+    const c = document.getElementById("dice-container");
+    c.innerHTML = "";
+    rolls = []; // サイコロの結果を毎回初期化
+
+    for (let i = 0; i < 9; i++) {
+        const r = Math.floor(Math.random() * 6) + 1;
+        rolls.push(r);
+        const d = document.createElement("div");
+        d.className = "dice";
+        d.textContent = r;  // 数字表示のまま
+        c.appendChild(d);
+    }
+
+    const counts = {};
+    rolls.forEach(n => counts[n] = (counts[n] || 0) + 1);
+    const max = Math.max(...Object.values(counts));
+    lastZoro = max;
+
+    rolls.forEach((n, i) => { if (counts[n] >= 5) c.children[i].classList.add("highlight"); });
+
+    rollCount++;
+    document.getElementById("roll-count").textContent = rollCount;
+
+    let bg = "";
+    if (max === 5) { count5++; bg = "#ffe4b5"; }
+    if (max === 6) { count6++; bg = "#ff1493"; }
+    if (max === 7) { count7++; bg = "#7b60f4"; }
+    if (max === 8) { count8++; bg = "#a5a5f5"; }
+    if (max === 9) { count9++; bg = "linear-gradient(to right,#f59090,#fcd7a1,#fff9b1,#a5d4ad,#a3bce2,#a59aca,#cfa7cd)"; }
+    if (bg) document.body.style.background = bg;
+
+    updateCounts();
+
+    if (history.length >= 10) history.shift();
+    history.push({ text: rolls.join(", "), hit: max >= 5 });
+    document.getElementById("history-list").innerHTML =
+        history.map(h => `<li class="${h.hit ? 'hit' : ''}">${h.text}</li>`).join("");
+
+    if (max >= 5) showPopup(`${max}個ゾロ目達成！`);
+}
+
+function updateCounts() {
+    document.getElementById("count-5").textContent = count5;
+    document.getElementById("count-6").textContent = count6;
+    document.getElementById("count-7").textContent = count7;
+    document.getElementById("count-8").textContent = count8;
+    document.getElementById("count-9").textContent = count9;
+}
+
+function resetStats() {
+    rollCount = count5 = count6 = count7 = count8 = count9 = 0;
+    document.getElementById("roll-count").textContent = 0;
+    updateCounts();
+    document.body.style.background = "radial-gradient(circle at top, #1b2a4a 0%, #0a0f1f 60%)";
+}
+
+function tweetResult() {
+    // サイコロの絵文字に変換
+    const rollsText = rolls.map(roll => diceEmojis[roll]).join(" ");
+    const text = `#フブキングダム\n\n🎲🦊9サイコロゾロ目耐久並走\n「結果：${rollCount}回目に${lastZoro}個ゾロ目出たよ！」\n ${rollsText}\n https://syaotan35p.github.io/fubuki_dice9/`;
+
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`);
+}
+
+function showPopup(msg) {
+    document.getElementById("popup-message").textContent = msg;
+    document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+</script>
+
+
+
+<div id="trend_notification_app" class="trend_notification_app_outer"><div id="trend_notification"><div id="trend_notification_con"></div></div></div><div id="UMS_TOOLTIP" style="position: absolute; cursor: pointer; z-index: 2147483647; background: transparent; top: -100000px; left: -100000px;"></div></body><umsdataelement id="UMSDataElement" style="display: none;"></umsdataelement><div id="tmtoolbar_manual_rating_injected" style="display: none;">init</div><div id="UMSSendDataEventElement" style="display: none;">init</div></html>
