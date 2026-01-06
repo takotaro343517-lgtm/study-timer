@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "sorts.h": "c",
+        "ev3api.h": "c"
+    }
+}

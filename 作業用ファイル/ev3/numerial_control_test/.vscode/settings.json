@@ -1,0 +1,31 @@
+{
+    "files.associations": {
+        "linetrase.h": "c",
+        "buttons.h": "c",
+        "wait_for_button.h": "c",
+        "ev3api.h": "c",
+        "stdlib.h": "c",
+        "steering.h": "c",
+        "sorts.h": "c",
+        "motor.h": "c",
+        "motor_movement.h": "c",
+        "stdio.h": "c",
+        "app.h": "c",
+        "kernel.h": "c",
+        "t_syslog.h": "c",
+        "ev3api_button.h": "c",
+        "ev3api_speaker.h": "c",
+        "ev3api_motor.h": "c",
+        "ev3api_sensor.h": "c",
+        "rgb_to_hsv.h": "c",
+        "logging.h": "c",
+        "color_single_detect.h": "c",
+        "one_linetrase.h": "c",
+        "several_color_detect.h": "c",
+        "jojiki_linetrase.h": "c",
+        "math.h": "c",
+        "stdint.h": "c",
+        "motor_movement_ster.h": "c"
+    },
+    "C_Cpp.dimInactiveRegions": false
+}
