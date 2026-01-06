@@ -2,7 +2,8 @@ import os
 import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, jsonify, g
 
-app = Flask(__name__)
+app = Flask(__name__,
+            template_folder="apps/list_and_timer_app/templates")
 
 BASE_DIR = os.path.dirname(__file__)
 DB_PATH = os.path.join(BASE_DIR, "todos.db")
