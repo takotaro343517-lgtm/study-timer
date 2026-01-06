@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>時間管理</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+  <div class="container">
+    <h1>時間管理</h1>
+
+    <select id="todoSelect">
+      {% for todo in todos %}
+        <option value="{{ todo.id }}">{{ todo.title }}</option>
+      {% endfor %}
+    </select>
+
+    <div id="time">0分 0秒</div>
+
+    <div class="buttons">
+      <button class="start" onclick="start()">Start</button>
+      <button class="stop" onclick="stop()">Stop</button>
+    </div>
+
+    <h2>進捗</h2>
+
+    {% for todo in todos %}
+      <p>{{ todo.title }}（{{ todo.progress }}%）</p>
+      <div class="bar">
+        <div class="bar-fill" style="width: {{ todo.progress }}%"></div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <script src="/static/timer.js"></script>
+</body>
+</html>
