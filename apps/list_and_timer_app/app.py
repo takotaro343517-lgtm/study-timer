@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+import os
 import sqlite3
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 
 app = Flask(__name__)
-DB = "todos.db"
+
+BASE_DIR = os.path.dirname(__file__)
+DB = os.path.join(BASE_DIR, "todos.db")
 
 # ---------- DBユーティリティ ----------
 
@@ -10,15 +13,17 @@ def get_db():
     return sqlite3.connect(DB)
 
 def init_db():
-    with get_db() as conn:
-        conn.execute("""
+    conn = sqlite3.connect(DB)
+    conn.execute("""
         CREATE TABLE IF NOT EXISTS todos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT,
-            planned INTEGER,
-            elapsed INTEGER DEFAULT 0
+            title TEXT NOT NULL,
+            planned INTEGER NOT NULL,
+            elapsed INTEGER NOT NULL DEFAULT 0
         )
-        """)
+    """)
+    conn.commit()
+    conn.close()
 
 # ---------- ページ ----------
 
