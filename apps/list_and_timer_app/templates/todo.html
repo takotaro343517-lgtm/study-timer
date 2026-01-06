@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDo作成</title>
+</head>
+<body>
+  <div class="container">
+    <h1>ToDo作成</h1>
+
+    <form action="/add_todo" method="post">
+      <input name="title" placeholder="内容" required>
+      <input name="planned" type="number" placeholder="予定時間（分）" required>
+      <button type="submit">追加</button>
+    </form>
+
+    <h2>リスト</h2>
+    <ul>
+      {% for todo in todos %}
+        <li>{{ todo[1] }}（予定 {{ todo[2] }}分）</li>
+      {% endfor %}
+    </ul>
+
+    <a href="/timer">時間管理ページへ</a>
+  </div>
+</body>
+
+</html>

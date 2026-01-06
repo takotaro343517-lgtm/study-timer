@@ -1,19 +1,19 @@
 import os
 import sqlite3
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, g
 
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(__file__)
-DB = os.path.join(BASE_DIR, "todos.db")
+DB_PATH = os.path.join(BASE_DIR, "todos.db")
 
-# ---------- DBユーティリティ ----------
 
-def get_db():
-    return sqlite3.connect(DB)
+# ---------- コア関数 ----------
+def get_conn():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
 
-def init_db():
-    conn = sqlite3.connect(DB)
+    # ★ここで必ず保証★
     conn.execute("""
         CREATE TABLE IF NOT EXISTS todos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,65 +23,36 @@ def init_db():
         )
     """)
     conn.commit()
-    conn.close()
+    return conn
 
-# ---------- ページ ----------
 
-@app.route("/")
+@app.teardown_appcontext
+def close_conn(e=None):
+    conn = g.pop("conn", None)
+    if conn:
+        conn.close()
+
+
+# ---------- 画面 ----------
+@app.route("/", methods=["GET"])
 def todo_page():
-    with get_db() as conn:
-        todos = conn.execute("SELECT * FROM todos").fetchall()
-    return render_template("todo.html", todos=todos)
+    conn = get_conn()
+    todos = conn.execute("SELECT * FROM todos").fetchall()
+    return render_template("index.html", todos=todos)
 
-@app.route("/timer")
-def timer_page():
-    with get_db() as conn:
-        rows = conn.execute("SELECT * FROM todos").fetchall()
 
-    todos = []
-    for t in rows:
-        progress = min(100, int(t[3] / (t[2] * 60) * 100)) if t[2] else 0
-        todos.append({
-            "id": t[0],
-            "title": t[1],
-            "planned": t[2],
-            "elapsed": t[3],
-            "progress": progress
-        })
-
-    return render_template("timer.html", todos=todos)
-
-# ---------- 処理 ----------
-
-@app.route("/add_todo", methods=["POST"])
+@app.route("/add", methods=["POST"])
 def add_todo():
-    title = request.form["title"]
-    planned = int(request.form["planned"])
-
-    with get_db() as conn:
-        conn.execute(
-            "INSERT INTO todos (title, planned) VALUES (?, ?)",
-            (title, planned)
-        )
-
-    return redirect(url_for("todo_page"))
-
-@app.route("/add_time", methods=["POST"])
-def add_time():
+    conn = get_conn()
     data = request.get_json()
-    todo_id = int(data["id"])
-    seconds = int(data["seconds"])
 
-    with get_db() as conn:
-        conn.execute(
-            "UPDATE todos SET elapsed = elapsed + ? WHERE id = ?",
-            (seconds, todo_id)
-        )
-
+    conn.execute(
+        "INSERT INTO todos (title, planned, elapsed) VALUES (?, ?, 0)",
+        (data["title"], int(data["planned"]))
+    )
+    conn.commit()
     return jsonify({"status": "ok"})
 
-# ---------- 起動 ----------
 
 if __name__ == "__main__":
-    init_db()
-    app.run()
+    app.run(debug=True)
